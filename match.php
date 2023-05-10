@@ -88,8 +88,6 @@
                         var xmlhttp2 = new XMLHttpRequest();
                         xmlhttp2.onreadystatechange = function() {
                             if (this.readyState == 4 && this.status == 200) {
-                                console.log("liked user added");
-
                                 // Deuxième requête
                                 var xmlhttp3 = new XMLHttpRequest();
                                 xmlhttp3.onreadystatechange = function() {
