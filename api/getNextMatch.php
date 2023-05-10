@@ -20,7 +20,7 @@
             echo '<div id="nomatch">No more matches !!!</div>';
         }
         $randomUser = $users[rand(0, count($users) - 1)];
-        while (trim(explode(",",$randomUser)[2]) == trim($_SESSION["currentUser"]) && trim(explode(",", $randomUser)[4]) == trim(explode(",", getUserByName())[4]))
+        while (trim(explode(",",$randomUser)[2]) == trim($_SESSION["currentUser"]) || trim(explode(",", $randomUser)[4]) == trim(explode(",", getUserByName())[4]))
         {
             $randomUser = $users[rand(0, count($users) - 1)];
         }

@@ -19,12 +19,12 @@
                     }
                 }
                 $sexe = explode(",", $value)[4];
-                echo "<div id=\"messages\">";
+                echo "<div class=\"messages\" onclick='goForChat(this)'>";
                 if ($sexe == "f")
                     echo '<img src="image/femme.jpg" alt="photo" class="photo-chat">';
                 else
                     echo '<img src="image/homme.jpg" alt="photo" class="photo-chat">';
-                echo '<div id="nom-chat">' . explode(",", $value)[0] . '</div>';
+                echo '<div id="nom-chat">' . explode(",", $value)[0] . ' (' . explode(",", $value)[2] . ')</div>';
                 echo '<div id="contenu-chat"> Vous avez matché ! </div>';
                 echo "</div>";
             }

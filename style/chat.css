@@ -45,9 +45,38 @@ input[type="text"]
     outline: none;
 }
 
-.message
-{
+.message {
     display: flex;
     flex-direction: row;
     margin: 0.5rem 0;
+    margin-bottom: 10px;
+    clear: both;
+}
+
+
+
+.message-by-him {
+    background-color: #B8FFF4;
+    border-radius: 5px 5px 5px 0;
+    padding: 10px;
+    max-width: 70%;
+    color: black;
+    align-self: flex-start;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.message-by-me {
+    background-color: lightpink;
+    color: black;
+    border-radius: 5px 5px 0 5px;
+    padding: 10px;
+    max-width: 70%;
+    align-self: flex-end;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+img
+{
+    border-radius: 50%;
 }

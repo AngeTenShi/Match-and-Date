@@ -62,6 +62,7 @@
             xmlhttp4.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("chat-container").innerHTML = this.responseText;
+                    setMessageBoxGrey();
                 }
             };
             xmlhttp4.open("GET", "api/getChat.php", true);
@@ -72,28 +73,50 @@
             socket.onmessage = function(event)
             {
                 var message = JSON.parse(event.data);
-                console.log(message)
                 if (message.to == "<?php echo trim($_SESSION["currentUser"]) ?>")
                 {
                     var msg = document.createElement("div");
                     msg.className = "message";
-                    msg.innerHTML = "<div class=\"message-content\">" + message.message + "</div>";
+                    msg.innerHTML = "<div class=\"message-by-him\">" + message.message + "</div>";
                     document.getElementById("message-content").appendChild(msg);
                 }
             }
         }
+        // when page and everything is load execute a function
         document.getElementById("submit-btn").onclick = function(event) {
             event.preventDefault(); // Empêche le comportement par défaut du bouton
             var msg = document.getElementById("chat-input").value;
-            var message = {"message": msg, "from": "<?php echo $_SESSION["currentUser"] ?>", "to": "<?php echo $_GET["name"] ?>"};
+            if (msg.length < 1)
+                return;
+            var message = {"message": msg, "from": "<?php echo $_SESSION["currentUser"] ?>", "to": "<?php echo $_GET["id"] ?>"};
             socket.send(JSON.stringify(message));
             document.getElementById("chat-input").value = "";
             // add a message to the chat
             var msg = document.createElement("div");
-            msg.className = "message";
-            msg.innerHTML = "<div class=\"message-content\">" + message.message + "</div>";
+            msg.className = "message-by-me";
+            msg.innerHTML = message.message;
             document.getElementById("message-content").appendChild(msg);
-            console.log(message);
         };
+        function goForChat(element)
+        {
+            // format is prenom (username)
+            var username = element.childNodes[1].innerHTML.split("(")[1].split(")")[0];
+            window.history.pushState("", "", "chat.php?id=" + username);
+            var messages = document.getElementsByClassName("messages");
+            for (var i = 0; i < messages.length; i++)
+            {
+                messages[i].style.backgroundColor = "white";
+            }
+            element.style.backgroundColor = "#ebebeb";
+        }
+        function setMessageBoxGrey()
+        {
+            var messages = document.getElementsByClassName("messages");
+            for (var i = 0; i < messages.length; i++)
+            {
+                if (messages[i].childNodes[1].innerHTML.split("(")[1].split(")")[0] == "<?php echo $_GET["id"] ?>")
+                    messages[i].style.backgroundColor ="#ebebeb";
+            }
+        }
     </script>
 </body>

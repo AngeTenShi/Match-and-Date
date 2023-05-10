@@ -7,11 +7,11 @@ if (isset($_POST["prenom"]) && isset($_POST["nom"]) && isset($_POST["username"])
     $password = $_POST["password"];
     $sexe = $_POST["sexe"];
     $age = $_POST["age"];
-    $qualite = $_POST["qualite"];
+    $qualite = $_POST["ville"];
     $description = $_POST["description"];
 
     // Ouvrir le fichier users.csv en mode écriture
-    $file = fopen("users.csv", "a");
+    $file = fopen("users.csv", "a+");
 
     if (!is_numeric($age)) {
         echo "Age must be a number";
@@ -25,7 +25,6 @@ if (isset($_POST["prenom"]) && isset($_POST["nom"]) && isset($_POST["username"])
             break;
         }
     }
-    fclose($file);
     if($found) {
         echo "Username already exists";
         exit();
@@ -35,7 +34,7 @@ if (isset($_POST["prenom"]) && isset($_POST["nom"]) && isset($_POST["username"])
         exit();
     }
     // Écrire les données de l'utilisateur dans le fichier CSV
-    fputcsv($file, array($prenom, $nom, $username, $password, $sexe, $age, $qualite, $description, 0));
+    fputcsv($file, array($prenom, $nom, $username, $password, $sexe, $age, $qualite, $description));
 
     // Fermer le fichier
     fclose($file);

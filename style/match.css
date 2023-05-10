@@ -57,6 +57,11 @@ body, html
     width: 100%;
 }
 
+.messages:hover
+{
+    background-color: #ebebeb;
+}
+
 #nom-chat, #contenu-chat
 {
     align-items: center;
@@ -84,7 +89,7 @@ body, html
     background-color: #bebebe;
 }
 
-#messages {
+.messages {
     border-bottom : 1px solid #000000;
     height: 10%;
     display: flex;
@@ -106,10 +111,17 @@ body, html
 }
 
 .like, .dislike {
-    width: 10%;
+    width: 5%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    margin-left : 15px;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+
+img
+{
+    border-radius: 50%;
 }
 
 #photo-and-bouton {

@@ -47,7 +47,7 @@
             <div id="photo-and-bouton">
                 <div id="biographie"></div>
                 <div id="prenom"></div>
-                <div id="pseudo"></div>
+                <div id="username"></div>
                 <div id="age"></div>
                 <div id="bouton">
                     <img src="image/like.png" alt="like" class="like" onclick="likeUser()">
@@ -89,21 +89,24 @@
                         xmlhttp2.onreadystatechange = function() {
                             if (this.readyState == 4 && this.status == 200) {
                                 console.log("liked user added");
+
+                                // Deuxième requête
+                                var xmlhttp3 = new XMLHttpRequest();
+                                xmlhttp3.onreadystatechange = function() {
+                                    if (this.readyState == 4 && this.status == 200) {
+                                        if (this.responseText === "true") {
+                                            addMatchToMessage(document.getElementById("prenom").innerHTML);
+                                        }
+                                    }
+                                };
+                                xmlhttp3.open("POST", "api/checkMatch.php", true);
+                                xmlhttp3.setRequestHeader("Content-type", "application/json");
+                                xmlhttp3.send(JSON.stringify({ "name": document.getElementById("username").innerHTML }));
                             }
                         };
                         xmlhttp2.open("POST", "api/addMatch.php", true);
                         xmlhttp2.setRequestHeader("Content-type", "application/json");
                         xmlhttp2.send(JSON.stringify({ "name": document.getElementById("username").innerHTML }));
-                        var xmlhttp3 = new XMLHttpRequest();
-                        xmlhttp3.onreadystatechange = function() {
-                            if (this.readyState == 4 && this.status == 200) {
-                                if (this.responseText === "true") {
-                                    addMatchToMessage(document.getElementById("prenom").innerHTML);
-                                }
-                            }
-                        };
-                        xmlhttp3.open("POST", "api/checkMatch.php", true);
-                        xmlhttp3.send(JSON.stringify({ "name": document.getElementById("username").innerHTML }));
                         var xmlhttp = new XMLHttpRequest();
                         xmlhttp.onreadystatechange = function() {
                             if (this.readyState == 4 && this.status == 200) {
@@ -113,38 +116,40 @@
                         xmlhttp.open("GET", "api/getNextMatch.php", true);
                         xmlhttp.send();
                     }
-                    function addMatchToMessage(prenom)
+                    function addMatchToMessage(prenom, username)
                     {
-                        // dans la fonction de vérification de match
-                        if (true) {
-                            console.log("match");
-                            // créer un nouveau div pour le message
-                            const newMessageDiv = document.createElement("div");
-                            newMessageDiv.id = "messages";
+                        // créer un nouveau div pour le message
+                        const newMessageDiv = document.createElement("div");
+                        newMessageDiv.className = "messages";
+                        newMessageDiv.setAttribute("onclick", "goForChat(this)");
+                        // ajouter l'image de profil
+                        const img = document.createElement("img");
+                        img.src = "image/femme.jpg";
+                        img.alt = "photo";
+                        img.classList.add("photo-chat");
+                        newMessageDiv.appendChild(img);
 
-                            // ajouter l'image de profil
-                            const img = document.createElement("img");
-                            img.src = "image/femme.jpg";
-                            img.alt = "photo";
-                            img.classList.add("photo-chat");
-                            newMessageDiv.appendChild(img);
+                        // ajouter le nom de la personne likée
+                        const nomDiv = document.createElement("div");
+                        nomDiv.textContent = prenom + " (" + document.getElementById("username").innerHTML + ")";
+                        nomDiv.id = "nom-chat";
+                        newMessageDiv.appendChild(nomDiv);
 
-                            // ajouter le nom de la personne likée
-                            const nomDiv = document.createElement("div");
-                            nomDiv.textContent = prenom;
-                            nomDiv.id = "nom-chat";
-                            newMessageDiv.appendChild(nomDiv);
+                        // ajouter le message
+                        const contenuDiv = document.createElement("div");
+                        contenuDiv.textContent = "Vous avez matché";
+                        contenuDiv.id = "contenu-chat";
+                        newMessageDiv.appendChild(contenuDiv);
 
-                            // ajouter le message
-                            const contenuDiv = document.createElement("div");
-                            contenuDiv.textContent = "Vous avez matché";
-                            contenuDiv.id = "contenu-chat";
-                            newMessageDiv.appendChild(contenuDiv);
-
-                            // ajouter le nouveau message au chat-container
-                            const chatContainer = document.getElementById("chat-container");
-                            chatContainer.appendChild(newMessageDiv);
-                        }
+                        // ajouter le nouveau message au chat-container
+                        const chatContainer = document.getElementById("chat-container");
+                        chatContainer.appendChild(newMessageDiv);
+                    }
+                    function goForChat(element)
+                    {
+                        // format is prenom (username)
+                        var username = element.childNodes[1].innerHTML.split("(")[1].split(")")[0];
+                        window.location.href = "chat.php?id=" + encodeURIComponent(username);
                     }
                 </script>
         </div>
